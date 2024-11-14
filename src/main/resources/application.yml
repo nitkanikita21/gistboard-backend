@@ -1,6 +1,6 @@
 logging:
   level:
-    io.r2dbc.h2: TRACE
+    org.springframework.security.web: DEBUG
 
 spring:
   application:
@@ -27,14 +27,9 @@ spring:
             user-name-attribute: username
 
   r2dbc:
-    url: r2dbc:h2:mem:///testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    username: sa
-    password: ""
-    initialization-mode: always
-
-  h2:
-    console:
-      enabled: true
+    url: r2dbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
 
 server:
   port: 8080
@@ -44,8 +39,8 @@ server:
 
 jwt:
   secret_key: 9Xqfvh14tls3TA/ush4ZcUS/61qlon/3/Dfg9qt/EPqIYGTLvbJn2GW44hd7BFMjvrDxoPiEf9Uod0Kd4T7k5w==
-  expiration: 900000
-  refresh_expiration: 86400000
+  access_lifetime: 15m
+  refresh_lifetime: 1d
 
 auth:
   cookie:

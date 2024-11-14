@@ -15,11 +15,11 @@ public class DbConfig {
     public ConnectionFactoryInitializer initializer(ConnectionFactory connectionFactory) {
         ConnectionFactoryInitializer initializer = new ConnectionFactoryInitializer();
         initializer.setConnectionFactory(connectionFactory);
-        initializer.setDatabasePopulator(
+        /*initializer.setDatabasePopulator(
             new ResourceDatabasePopulator(
                 new ClassPathResource("schema.sql")
             )
-        );
+        );*/
         return initializer;
     }
 

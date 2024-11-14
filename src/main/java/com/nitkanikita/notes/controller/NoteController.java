@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping("/articles")
+@RequestMapping("/article")
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class NoteController {
 
     private final NoteRepository noteRepository;
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping()
     public Mono<Page<Note>> getAllNotes(Pageable pageable) {
         return this.noteRepository.findAllBy(pageable)
             .collectList()

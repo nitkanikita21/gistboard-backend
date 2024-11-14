@@ -44,10 +44,16 @@ public class UserService implements ReactiveUserDetailsService {
             .switchIfEmpty(Mono.error(new UsernameNotFoundException("User not found")));
     }
 
+    public Mono<User> getById(Long id) {
+        return repository.findById(id)
+            .switchIfEmpty(Mono.error(new UsernameNotFoundException("User not found")));
+    }
+
     public Mono<User> getCurrentUser() {
         var username = SecurityContextHolder.getContext().getAuthentication().getName();
         return getByUsername(username);
     }
+
     public Mono<User> registerOrUpdateUser(OAuth2User oAuth2User) {
         return registerOrUpdateUser(
             oAuth2User.getAttribute("username"),

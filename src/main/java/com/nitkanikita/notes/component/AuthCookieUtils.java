@@ -1,13 +1,13 @@
-package com.nitkanikita.notes.service;
+package com.nitkanikita.notes.component;
 
 import jakarta.servlet.http.Cookie;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 @Getter
-public class AuthCookieService {
+public class AuthCookieUtils {
     @Value("${auth.cookie.domain}")
     private String domain;
     @Value("${auth.cookie.path}")

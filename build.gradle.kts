@@ -35,8 +35,7 @@ dependencies {
     testImplementation("org.springframework.security:spring-security-test")
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
-    runtimeOnly("com.h2database:h2")
-    implementation("io.r2dbc:r2dbc-h2")
+    implementation("org.postgresql:r2dbc-postgresql:1.0.7.RELEASE")
 
     implementation("io.jsonwebtoken:jjwt-api:0.12.6")
     implementation("io.jsonwebtoken:jjwt-impl:0.12.6")
