@@ -21,6 +21,7 @@ public class AuthCookieUtils {
         Cookie cookie = new Cookie(nameAccessToken, token);
         cookie.setDomain(domain);
         cookie.setPath(path);
+        cookie.setSecure(false);
         return cookie;
     }
     public Cookie getRefreshToken(String token) {
@@ -28,6 +29,7 @@ public class AuthCookieUtils {
         cookie.setHttpOnly(true);
         cookie.setDomain(domain);
         cookie.setPath(path);
+        cookie.setSecure(false);
         return cookie;
     }
 

@@ -26,10 +26,15 @@ spring:
             user-info-uri: https://discord.com/api/users/@me
             user-name-attribute: username
 
-  r2dbc:
-    url: r2dbc:postgresql://localhost:5432/postgres
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
     password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
 
 server:
   port: 8080
@@ -39,8 +44,8 @@ server:
 
 jwt:
   secret_key: 9Xqfvh14tls3TA/ush4ZcUS/61qlon/3/Dfg9qt/EPqIYGTLvbJn2GW44hd7BFMjvrDxoPiEf9Uod0Kd4T7k5w==
-  access_lifetime: 15m
-  refresh_lifetime: 1d
+  access_lifetime: PT1M
+  refresh_lifetime: P1D
 
 auth:
   cookie:

@@ -38,7 +38,7 @@ public class CookiesTokenConsumerOAuth2SuccessHandler implements AuthenticationS
     ) throws IOException {
         OAuth2User oauthUser = (OAuth2User) authentication.getPrincipal();
 
-        User user = userService.registerOrUpdateUser(oauthUser).block();
+        User user = userService.registerOrUpdateUser(oauthUser);
         String accessToken = jwtService.generateAccessToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
 

@@ -1,14 +1,16 @@
 package com.nitkanikita.notes.repository;
 
 import com.nitkanikita.notes.model.entity.User;
-import org.springframework.data.r2dbc.repository.R2dbcRepository;
-import org.springframework.data.repository.reactive.ReactiveCrudRepository;
-import org.springframework.stereotype.Repository;
-import reactor.core.publisher.Mono;
+import io.vavr.control.Option;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@Repository
-public interface UserRepository extends R2dbcRepository<User, Long> {
-    Mono<User> findByUsername(String username);
-    Mono<Boolean> existsByUsername(String username);
-    Mono<Boolean> existsByEmail(String email);
+import java.util.Optional;
+
+@org.springframework.stereotype.Repository
+public interface UserRepository extends JpaRepository<User, Long> {
+    Option<User> findByUsername(String username);
+
+    boolean existsByUsername(String username);
+
+    boolean existsByEmail(String email);
 }

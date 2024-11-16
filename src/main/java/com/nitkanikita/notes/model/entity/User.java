@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
+import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,31 +13,39 @@ import java.util.Collection;
 import java.util.List;
 
 
-@Table("users")
+@Entity
+@Table(name = "users")  // використовується name="users" замість @Table("users") з R2DBC
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class User implements UserDetails {
+
     public enum Role {
-        USER,
-        ADMIN
+        ROLE_USER,
+        ROLE_MODERATOR,
+        ROLE_ADMIN
     }
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  // додано для автоінкременту ID
     private Long id;
 
-    @Column("avatar")
+    @Column(name = "avatar")  // використовується name="avatar"
     private String avatarUrl;
 
-    @Column("username")
+    @Column(name = "username")  // використовується name="username"
     private String username;
 
-    @Column("email")
+    @Column(name = "email")  // використовується name="email"
     private String email;
 
-    @Column("role")
+    @Enumerated(EnumType.STRING)  // додається для коректного зберігання значень enum
+    @Column(name = "role")  // використовується name="role"
     private Role role;
+
+    @OneToMany(mappedBy = "author") // Це зв'язок з Note
+    private List<Article> articles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
