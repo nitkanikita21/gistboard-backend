@@ -35,8 +35,7 @@ public class ArticleController {
     @GetMapping("/all/my")
     @PreAuthorize("isAuthenticated()")
     public Page<ArticleDto> getAllMy(Pageable pageable, @RequestParam(defaultValue = "") String query) throws Exception {
-        throw new Exception("Shit code");
-//        return articleService.findAllByUser(pageable, query, userService.getCurrentUser());
+        return articleService.findAllByUser(pageable, query, userService.getCurrentUser());
     }
 
     @GetMapping("/{id}")
