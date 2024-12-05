@@ -43,7 +43,7 @@ public class JwtUtils {
         if (userDetails instanceof User user) {
             claims.put("id", user.getId());
             claims.put("username", user.getUsername());
-            claims.put("role", user.getRole());
+            claims.put("roles", user.getRoles());
         }
         return claims;
     }

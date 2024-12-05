@@ -3,9 +3,9 @@ package com.nitkanikita.notes.service;
 import com.google.common.hash.Hashing;
 import com.nitkanikita.notes.model.dto.response.UserDto;
 import com.nitkanikita.notes.model.entity.User;
+import com.nitkanikita.notes.repository.ArticleRepository;
 import com.nitkanikita.notes.repository.UserRepository;
 import io.vavr.control.Option;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +23,7 @@ import java.nio.charset.StandardCharsets;
 public class UserService implements UserDetailsService {
 
     private final UserRepository repository;
+    private final ArticleRepository articleRepository;
 
     @Transactional
     public User save(User user) {
@@ -79,7 +80,6 @@ public class UserService implements UserDetailsService {
                 User.builder()
                     .username(username)
                     .email(email)
-                    .role(User.Role.ROLE_USER)
                     .avatarUrl(avatarUrl)
                     .build()
             ));
@@ -87,8 +87,7 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        User user = getByUsername(username);
-        return user;
+        return getByUsername(username);
     }
 
     public String identifyAnonymousUser(String userAgent, String address) {
@@ -101,8 +100,9 @@ public class UserService implements UserDetailsService {
     public UserDto convertToDto(User user) {
         return UserDto.builder()
             .username(user.getUsername())
-            .role(user.getRole())
+            .roles(user.getRoles())
             .avatarUrl(user.getAvatarUrl())
+            .id(user.getId())
             .build();
     }
 

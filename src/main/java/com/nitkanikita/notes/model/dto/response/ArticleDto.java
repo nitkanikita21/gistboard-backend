@@ -20,4 +20,5 @@ public class ArticleDto {
     private UserDto author;
     private LocalDateTime createdAt;
     private Long views;
+    private boolean isPrivate;
 }

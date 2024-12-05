@@ -1,16 +1,15 @@
 package com.nitkanikita.notes.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import jakarta.persistence.*;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Entity
@@ -20,12 +19,12 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class User implements UserDetails {
-
     public enum Role {
-        ROLE_USER,
-        ROLE_MODERATOR,
-        ROLE_ADMIN
+        USER,
+        MODERATOR,
+        ADMIN
     }
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)  // додано для автоінкременту ID
@@ -40,16 +39,20 @@ public class User implements UserDetails {
     @Column(name = "email")  // використовується name="email"
     private String email;
 
-    @Enumerated(EnumType.STRING)  // додається для коректного зберігання значень enum
-    @Column(name = "role")  // використовується name="role"
-    private Role role;
+    @Singular()
+    @Enumerated(EnumType.STRING)
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    private Set<Role> roles;
 
     @OneToMany(mappedBy = "author") // Це зв'язок з Note
     private List<Article> articles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return roles.stream()
+            .map(role -> new SimpleGrantedAuthority(role.toString()))
+            .collect(Collectors.toList());
     }
 
     @Override

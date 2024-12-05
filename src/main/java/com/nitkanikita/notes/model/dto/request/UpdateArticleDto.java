@@ -5,18 +5,19 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.lang.Nullable;
 
 @Data
 @RequiredArgsConstructor
-public class CreateArticleDto {
-    @NotBlank
+public class UpdateArticleDto {
     @Size(min = 1, max = 36)
+    @Nullable
     private final String title;
 
-    @NotBlank
     @Size(min = 1, max = 10_000)
+    @Nullable
     private final String content;
 
-    @NotNull
-    private final boolean isPrivate;
+    @Nullable
+    private final Boolean isPrivate;
 }

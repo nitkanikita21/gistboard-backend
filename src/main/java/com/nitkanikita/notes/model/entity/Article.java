@@ -18,7 +18,7 @@ public class Article {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)  // Автоматичне генерування значення для id
-    private Long id;
+    private long id;
 
     private String title;
     @Lob
@@ -29,9 +29,13 @@ public class Article {
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @Builder.Default
-    private Long views = 0L;
+    private long views = 0L;
 
     @ManyToOne
     @JoinColumn(name = "user_id") // Це вказує на зовнішній ключ
     private User author; // Посилання на користувача (автора)
+
+    @Builder.Default
+    @Column(nullable = false)
+    private boolean isPrivate = false;
 }

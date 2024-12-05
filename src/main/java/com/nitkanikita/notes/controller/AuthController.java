@@ -2,6 +2,7 @@ package com.nitkanikita.notes.controller;
 
 import com.nitkanikita.notes.component.AuthCookieUtils;
 import com.nitkanikita.notes.component.JwtUtils;
+import com.nitkanikita.notes.model.dto.response.RefreshTokenErrorDto;
 import com.nitkanikita.notes.model.dto.response.UserDto;
 import com.nitkanikita.notes.model.entity.User;
 import com.nitkanikita.notes.service.UserService;
@@ -52,7 +53,7 @@ public class AuthController {
     ) {
         if (refreshToken == null || refreshToken.isEmpty()) {
             log.info("JWT is empty");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("JWT token is empty");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new RefreshTokenErrorDto("JWT token is empty"));
         }
 
         Long userId;
@@ -60,15 +61,15 @@ public class AuthController {
             userId = jwtUtils.extractUserId(refreshToken);
         } catch (ExpiredJwtException e) {
             log.info("JWT expired");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Expired refresh token");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new RefreshTokenErrorDto("Expired refresh token"));
         } catch (SignatureException e) {
             log.info("JWT signature exception", e);
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Cannot verify refresh token");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new RefreshTokenErrorDto("Cannot verify refresh token"));
         }
 
         User optionalUser = userService.getById(userId);
         if (optionalUser == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new RefreshTokenErrorDto("User not found"));
         }
 
         String newAccessToken = jwtUtils.generateAccessToken(optionalUser);

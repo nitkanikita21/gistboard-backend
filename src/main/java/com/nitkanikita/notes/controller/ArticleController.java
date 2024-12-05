@@ -1,10 +1,12 @@
 package com.nitkanikita.notes.controller;
 
 import com.nitkanikita.notes.model.dto.request.CreateArticleDto;
+import com.nitkanikita.notes.model.dto.request.UpdateArticleDto;
 import com.nitkanikita.notes.model.dto.response.ArticleDto;
 import com.nitkanikita.notes.repository.ArticleRepository;
 import com.nitkanikita.notes.service.ArticleService;
 import com.nitkanikita.notes.service.ArticleViewService;
+import com.nitkanikita.notes.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +25,18 @@ public class ArticleController {
     private final ArticleRepository articleRepository;
     private final ArticleService articleService;
     private final ArticleViewService articleViewService;
+    private final UserService userService;
 
-    @GetMapping()
-    public Page<ArticleDto> getAll(Pageable pageable) {
-        return articleService.findAll(pageable);
+    @GetMapping("/all")
+    public Page<ArticleDto> getAll(Pageable pageable, @RequestParam(defaultValue = "") String query) {
+        return articleService.findAll(pageable, query);
+    }
+
+    @GetMapping("/all/my")
+    @PreAuthorize("isAuthenticated()")
+    public Page<ArticleDto> getAllMy(Pageable pageable, @RequestParam(defaultValue = "") String query) throws Exception {
+        throw new Exception("Shit code");
+//        return articleService.findAllByUser(pageable, query, userService.getCurrentUser());
     }
 
     @GetMapping("/{id}")
@@ -49,6 +59,20 @@ public class ArticleController {
             articleService.incrementView(id);
         }
 
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{id}/update")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody UpdateArticleDto updateArticleDto) {
+        articleService.update(id, updateArticleDto);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{id}/delete")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        articleService.delete(id);
         return ResponseEntity.ok().build();
     }
 

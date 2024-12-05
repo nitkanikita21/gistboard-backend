@@ -45,7 +45,7 @@ dependencies {
     implementation("jakarta.validation:jakarta.validation-api:3.1.0")
     implementation("org.postgresql:postgresql")
     implementation("com.google.guava:guava:33.3.1-jre")
-
+    implementation("org.jetbrains:annotations:24.0.0")
 }
 
 tasks.withType<Test> {
